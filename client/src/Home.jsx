@@ -1,9 +1,9 @@
-import { useEffect } from "react"
-import axios from "axios"
+import { useEffect } from "react";
+import axios from 'axios';
 
 function Home () {
     useEffect(()=> {
-        axios.get('http://localhost:8081/')
+        axios.get('http://localhost:8081')
         .then(res => console.log(res))
         .catch(err => console.log(err));
     }, [])
@@ -12,4 +12,4 @@ function Home () {
     )
 }
 
-export default Home
+export default Home;
