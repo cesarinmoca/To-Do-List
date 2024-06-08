@@ -9,18 +9,18 @@ const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'crud'
+    database: 'CRUD'
 })
 
 app.get('/', (req, res) => {
-    const sql = 'SELECT * FROM student';
+    const sql = 'SELECT * FROM STUDENT';
     db.query(sql, (err, result) => {
-        if (err) return res.json({Message: 'Error inside database'});
-        return res.json(result);
+        if (err) return res.json({Message: 'Error inside server'})
+        return res.json(result)
     })
 })
 
 const port = 8081;
-app.listen(port, () => {
+app.listen(port, ()=> {
     console.log('Listening on port ' + port);
 })
