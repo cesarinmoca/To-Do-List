@@ -3,8 +3,8 @@ import cors from 'cors';
 import mysql from 'mysql';
 
 const app = express();
-app.use(cors());
 app.use(express.json());
+app.use(cors());
 
 const db = mysql.createConnection({
     host: 'localhost',
@@ -13,58 +13,53 @@ const db = mysql.createConnection({
     database: 'CRUD'
 });
 
-db.connect(err => {
-    if (err) {
-        console.log('Error connecting to the database:' + err);
-    }
-    console.log('Connected to the MySQL database.');
-});
-
-// Create a new todo
+//Create a todo
 app.post('/api/todos', (req, res) => {
     const { title } = req.body;
     const query = 'INSERT INTO TODOS (title, completed) VALUES (?, ?)';
     db.query(query, [title, false], (err, result) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-        res.json({ id: result.insertId, title, completed: false});
+        if (err) return res.json({ error: err.message });
+        return res.json({
+            id: result.insertId,
+            title,
+            completed: false
+        })
     });
 });
 
-// Get all todos
+//Read all todos
 app.get('/api/todos', (req, res) => {
     const query = 'SELECT * FROM TODOS';
-    db.query(query, (err, results) => {
-        if (err) {
-        return res.status(500).json({ error: err.message });
-        }
-        res.json(results);
-    });
-});
+    db.query(query, (err, result) => {
+        if (err) return res.json({ error: err.message });
+        return res.json(result);
+    })
+})
 
-  // Update a todo
+//Update a todo
 app.put('/api/todos/:id', (req, res) => {
     const { id } = req.params;
     const { title, completed } = req.body;
     const query = 'UPDATE TODOS SET title = ?, completed = ? WHERE id = ?';
-    db.query(query, [title, completed, id], (err) => {
-        if (err) {
-        return res.status(500).json({ error: err.message });
-        }
-        res.json({ id, title, completed });
+    db.query(query, [title, completed, id], (err, result) => {
+        if (err) return res.json({ error: err.message });
+        return res.json({
+            id,
+            title,
+            completed
+        })
     });
 });
 
-// Delete a todo
+//Delete a todo
 app.delete('/api/todos/:id', (req, res) => {
     const { id } = req.params;
     const query = 'DELETE FROM TODOS WHERE id = ?';
-    db.query(query, [id], (err) => {
-        if (err) {
-        return res.status(500).json({ error: err.message });
-        }
-        res.json({ message: 'Todo deleted' });
+    db.query(query, [id], (err, result) => {
+        if (err) return res.json({ error: err.message });
+        return res.json({
+            message: 'Todo Deleted'
+        })
     });
 });
 

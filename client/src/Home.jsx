@@ -4,13 +4,13 @@ import axios from 'axios';
 import './Home.css';
 
 export default function Home() {
-    const [todos, setTodos] = useState([]);
-    const [newTodo, setNewTodo] = useState('');
+    const [todos, setTodos] = useState([]); //JSON
+    const [newTodo, setNewTodo] = useState(''); //Todo Title
 
     useEffect(() => {
         fetchTodos();
     }, []);
-
+    
     async function fetchTodos() {
         const response = await axios.get('http://localhost:8081/api/todos');
         setTodos(response.data);
@@ -18,7 +18,7 @@ export default function Home() {
 
     async function createTodo() {
         if (newTodo.trim()) {
-            const response = await axios.post('http://localhost:8081/api/todos', { title: newTodo });
+            const response = await axios.post('http://localhost:8081/api/todos', { title: newTodo});
             setTodos([...todos, response.data]);
             setNewTodo('');
         }
@@ -26,10 +26,12 @@ export default function Home() {
 
     async function updateTodo(id, updatedTodo) {
         try {
-            const response = await axios.put(`http://localhost:8081/api/todos/${id}`, updatedTodo);
-            setTodos(todos.map(todo => (todo.id === id ? response.data : todo)));
-        } catch (error) {
-            console.error(`Error updating todo with ID ${id}:`, error);
+            const response = await axios.put(`http://localhost:8081/api/todos/${id}`, updatedTodo)
+            setTodos(todos.map((todo) => {
+                return todo.id === id ? response.data : todo
+            }))
+        } catch (err) {
+            console.error('Error' + err);
         }
     }
 
