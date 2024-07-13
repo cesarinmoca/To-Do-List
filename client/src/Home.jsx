@@ -26,12 +26,16 @@ export default function Home() {
 
     async function updateTodo(id, updatedTodo) {
         try {
-            const response = await axios.put(`http://localhost:8081/api/todos/${id}`, updatedTodo)
+            const response = await axios.put(`http://localhost:8081/api/todos/${id}`, updatedTodo);
             setTodos(todos.map((todo) => {
-                return todo.id === id ? response.data : todo
-            }))
+                if (todo.id === id) {
+                    return response.data;
+                } else {
+                    return todo;
+                }
+            }));
         } catch (err) {
-            console.error('Error' + err);
+            console.error({ error: err.message });
         }
     }
 
