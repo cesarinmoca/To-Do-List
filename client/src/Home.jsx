@@ -43,8 +43,8 @@ export default function Home() {
             setTodos(todos.filter((todo) => {
                 return todo.id !== id;
             }));
-        } catch (error) {
-            console.error(`Error deleting todo with ID ${id}:`, error);
+        } catch (err) {
+            console.error({ error: err.message });
         }
     }    
     
