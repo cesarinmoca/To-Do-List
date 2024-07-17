@@ -4,24 +4,22 @@ import axios from 'axios';
 import './Home.css';
 
 export default function Home() {
-    const [todos, setTodos] = useState([]); //JSON
-    const [newTodo, setNewTodo] = useState(''); //Todo Title
+    const [todos, setTodos] = useState([]);
+    const [newTodo, setNewTodo] = useState('');
 
     useEffect(() => {
         fetchTodos();
     }, []);
-    
+
     async function fetchTodos() {
         const response = await axios.get('http://localhost:8081/api/todos');
         setTodos(response.data);
     }
 
     async function createTodo() {
-        if (newTodo.trim()) {
-            const response = await axios.post('http://localhost:8081/api/todos', { title: newTodo});
-            setTodos([...todos, response.data]);
-            setNewTodo('');
-        }
+        const response = await axios.post('http://localhost:8081/api/todos', { title: newTodo });
+        setTodos([...todos, response.data]);
+        setNewTodo('');
     }
 
     async function updateTodo(id, updatedTodo) {
@@ -33,21 +31,23 @@ export default function Home() {
                 } else {
                     return todo;
                 }
-            }));
+            }))
         } catch (err) {
-            console.error({ error: err.message });
+            console.error({ error: err.msessage });
         }
     }
 
     async function deleteTodo(id) {
         try {
             await axios.delete(`http://localhost:8081/api/todos/${id}`);
-            setTodos(todos.filter(todo => todo.id !== id));
+            setTodos(todos.filter((todo) => {
+                return todo.id !== id;
+            }));
         } catch (error) {
             console.error(`Error deleting todo with ID ${id}:`, error);
         }
-    }
-
+    }    
+    
     return (
         <div className="todo-list">
             <h1>Todo List</h1>
