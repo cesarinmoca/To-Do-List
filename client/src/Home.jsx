@@ -46,7 +46,7 @@ export default function Home() {
         } catch (err) {
             console.error({ error: err.message });
         }
-    }    
+    }
     
     return (
         <div className="todo-list">
